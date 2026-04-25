@@ -57,3 +57,5 @@ void displayHistory(const string& filename);
 // Output: Number of played games.
 
 int countPreviousGames(const string& filename);
+
+#endif
