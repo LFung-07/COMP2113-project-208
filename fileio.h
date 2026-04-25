@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+using namespace std;
 
 // Loads words from a text file into a vector of strings.
 // What it does: It opens a file, reads one word on each line, and stores them into a vector.
