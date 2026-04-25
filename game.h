@@ -17,16 +17,16 @@ private:
   char vowels[5];           // this is store an array of vowels
 
 public:
-  Hangman(const string& answer, int attempts);
-  bool guessLetter(char letter);
-  bool isGameOver() const;
-  bool isWin() const;
-  string getDisplayedWord() const;
-  string getGuessedLetters() const;
-  string getSecretWord() const;
-  int getRemainingGuesses() const;
-  int getMaxGuesses() const;
-  int getUnguessedVowelCount() const;
-  char defuseWrongLetter();
+  Hangman(const string& answer, int attempts);  // this is to run a new game
+  bool guessLetter(char letter);                // this is to check if the guessed character is in the answer
+  bool isGameOver() const;                      // this is to return if the game has ended
+  bool isWin() const;                           // this is to return if a player wins 
+  string getDisplayedWord() const;              // this is to return the display of current progress
+  string getGuessedLetters() const;             // this is to return all guessed characters
+  string getSecretWord() const;                 // this is to return the answer after the game
+  int getRemainingGuesses() const;              // this is to return the number of attempts left
+  int getMaxGuesses() const;                    // this is to return the maximum attempts the player has
+  int getUnguessedVowelCount() const;           // this is to show the number of unguessed vowels in the word [random event]
+  char defuseWrongLetter();                     // this is to eliminate one wrong and unguessed letter [random event]
 };
 #endif
