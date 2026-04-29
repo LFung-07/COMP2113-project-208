@@ -54,3 +54,10 @@ string getRandomWord(const vector<string>& word_list) {
     int randomIndex = rand() % word_list.size();
     return word_list[randomIndex];
 }
+
+void saveGameHistory(const string& filename, int game_no,
+                     const string& difficulty, bool won,
+                     const string& answer, int atps_left,
+                     int max_atps) {
+
+}
