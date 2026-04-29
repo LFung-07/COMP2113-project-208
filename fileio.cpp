@@ -59,5 +59,63 @@ void saveGameHistory(const string& filename, int game_no,
                      const string& difficulty, bool won,
                      const string& answer, int atps_left,
                      int max_atps) {
+    
+    // What it does: It appends a game result line to game_history.txt, after formatting it.
+    // Inputs: filename, game_no, difficulty, won, answer, atps_left, max_atps
+    // Output: None (writes to the history file).
+    
+    ofstream file(filename, ios::app);
+    if (file.is_open()) {
+        file << "Game " << game_no << " || "
+             << difficulty << " || "
+             << (won ? "Win" : "Loss") << " || "
+             << answer << " || "
+             << atps_left << "/" << max_atps << endl;
+        file.close();
+    } else {
+        cerr << "Error: Could not save game history." << endl;
+    }
+}
 
+void displayHistory(const string& filename) {
+    
+    // What it does: It reads all lines from the history file and prints them.
+    // Input: filename - Path to the history file.
+    // Output: None (prints game history to console).
+    
+    ifstream file(filename);
+    string line;
+
+    cout << "\n========== GAME HISTORY ==========" << endl;
+    if (file.is_open()) {
+        bool hvrec = false;
+        while (getline(file, line)) {
+            if (!line.empty()) {
+                cout << line << endl;
+                hvrec = true;
+            }
+        }
+        if (!hvrec) {
+            cout << "No games played yet." << endl;
+        }
+        file.close();
+    }
+    cout << "===================================\n" << endl;
+}
+
+int countPreviousGames(const string& filename) {
+    
+    ifstream file(filename);
+    string line;
+    int count = 0;
+
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            if (!line.empty()) {
+                count++;
+            }
+        }
+        file.close();
+    }
+    return count;
 }
