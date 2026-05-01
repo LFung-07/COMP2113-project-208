@@ -17,7 +17,7 @@ private:
   char vowels[5];           // this is store an array of vowels
 
 public:
-  Hangman(const string& answer, int attempts);  // this is to run a new game
+  Hangman(const string& word, int attempts);  // this is to run a new game
   bool guessLetter(char letter);                // this is to check if the guessed character is in the answer
   bool isGameOver() const;                      // this is to return if the game has ended
   bool isWin() const;                           // this is to return if a player wins 
