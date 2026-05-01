@@ -11,7 +11,7 @@ private:
   set<char> guessed_char;   // this is to store all characters guessed by the player
   set<char> wrong_char;     // this is to store all wrong charcters
   int wrong;                // this is to count the number of wrong guesses
-  int attempts;             // this is to store the maximum number of wrong guesses the player can make
+  int maxwrong;             // this is to store the maximum number of wrong guesses the player can make
   bool game_end;            // this is to see whether the game has ended
   bool win;                 // this is to see whether the player wins
   char vowels[5];           // this is store an array of vowels
