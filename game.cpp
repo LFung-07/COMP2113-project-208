@@ -52,11 +52,11 @@ bool Hangman::isWin() const {
   return win;
 }
 
-bool Hangman::isgame_end() const {
+bool Hangman::isGameOver() const {
   return game_end;
 }
 
-string Hangman::getdisplay() const {
+string Hangman::getDisplayedWord() const {
   string result;
   for (size_t i=0; i<display.length();i++) {
     result+=display[i];
@@ -67,7 +67,7 @@ string Hangman::getdisplay() const {
   return result;
 }
 
-string Hangman::getguessed_char() const {
+string Hangman::getGuessedLetters() const {
   string result;
   for (set<char>::iterator it=guessed_char.begin(); it!=guessed_char.end(); ++it) {
     result+=*it;
@@ -76,7 +76,7 @@ string Hangman::getguessed_char() const {
   return result;
 }
 
-string Hangman::getanswer() const {
+string Hangman::getSecretWord() const {
   return answer;
 }
 
