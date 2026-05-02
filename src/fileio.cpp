@@ -15,20 +15,19 @@ vector<string> loadWords(const string& filename) {
     ifstream file(filename);
     string word;
 
+
     if (!file.is_open()) {
         cerr << "Error: Could not open file " << filename << endl;
         return words;
     }
 
+
     while (getline(file, word)) {
-        // Remove carriage return if present (Windows-formatted files)
         if (!word.empty() && word.back() == '\r') {
             word.pop_back();
         }
 
-        // Check length of words as well.
         if (word.length() >= 4 && word.length() <= 12) {
-            // Convert to lowercase for consistency
             string lowerWord;
             for (char c : word) {
                 lowerWord += tolower(c);
@@ -37,9 +36,11 @@ vector<string> loadWords(const string& filename) {
         }
     }
 
+
     file.close();
     return words;
 }
+
 
 string getRandomWord(const vector<string>& word_list) {
     
@@ -47,13 +48,14 @@ string getRandomWord(const vector<string>& word_list) {
     // Input: word_list - A vector of strings to choose from.
     // Output: A randomly selected word.
     
-    if (word_list.empty()) {
+    if (wordList.empty()) {
         return "";
     }
-
-    int randomIndex = rand() % word_list.size();
-    return word_list[randomIndex];
+    
+    int randomIndex = rand() % wordList.size();
+    return wordList[randomIndex];
 }
+
 
 void saveGameHistory(const string& filename, int game_no,
                      const string& difficulty, bool won,
@@ -66,16 +68,17 @@ void saveGameHistory(const string& filename, int game_no,
     
     ofstream file(filename, ios::app);
     if (file.is_open()) {
-        file << "Game " << game_no << " || "
+        file << "Game " << gameNumber << " || "
              << difficulty << " || "
              << (won ? "Win" : "Loss") << " || "
              << answer << " || "
-             << atps_left << "/" << max_atps << endl;
+             << attemptsLeft << "/" << maxAttempts << endl;
         file.close();
     } else {
         cerr << "Error: Could not save game history." << endl;
     }
 }
+
 
 void displayHistory(const string& filename) {
     
@@ -88,20 +91,21 @@ void displayHistory(const string& filename) {
 
     cout << "\n========== GAME HISTORY ==========" << endl;
     if (file.is_open()) {
-        bool hvrec = false;
+        bool hasContent = false;
         while (getline(file, line)) {
             if (!line.empty()) {
                 cout << line << endl;
-                hvrec = true;
+                hasContent = true;
             }
         }
-        if (!hvrec) {
+        if (!hasContent) {
             cout << "No games played yet." << endl;
         }
         file.close();
     }
     cout << "===================================\n" << endl;
 }
+
 
 int countPreviousGames(const string& filename) {
     
