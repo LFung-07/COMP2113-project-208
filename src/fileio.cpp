@@ -2,25 +2,26 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
-using namespace
+
+
+using namespace std;
+
 
 vector<string> loadWords(const string& filename) {
-    
+
     // What it does: It opens a file, reads one word on each line, and stores them into a vector.
                     // Only include words with length we want (4-12 letter)
     // Input: filename - Path to the word list text file.
     // Output: A vector of all loaded words.
-     
+    
     vector<string> words;
     ifstream file(filename);
     string word;
-
 
     if (!file.is_open()) {
         cerr << "Error: Could not open file " << filename << endl;
         return words;
     }
-
 
     while (getline(file, word)) {
         if (!word.empty() && word.back() == '\r') {
@@ -36,36 +37,35 @@ vector<string> loadWords(const string& filename) {
         }
     }
 
-
     file.close();
     return words;
 }
 
+string getRandomWord(const vector<string>& wordList) {
 
-string getRandomWord(const vector<string>& word_list) {
-    
     // What it does: It picks a random item from the vector.
     // Input: word_list - A vector of strings to choose from.
     // Output: A randomly selected word.
+
     
     if (wordList.empty()) {
         return "";
     }
-    
+
     int randomIndex = rand() % wordList.size();
     return wordList[randomIndex];
 }
 
 
-void saveGameHistory(const string& filename, int game_no,
+void saveGameHistory(const string& filename, int gameNumber,
                      const string& difficulty, bool won,
-                     const string& answer, int atps_left,
-                     int max_atps) {
+                     const string& answer, int attemptsLeft,
+                     int maxAttempts) {
     
     // What it does: It appends a game result line to game_history.txt, after formatting it.
     // Inputs: filename, game_no, difficulty, won, answer, atps_left, max_atps
     // Output: None (writes to the history file).
-    
+
     ofstream file(filename, ios::app);
     if (file.is_open()) {
         file << "Game " << gameNumber << " || "
@@ -81,7 +81,7 @@ void saveGameHistory(const string& filename, int game_no,
 
 
 void displayHistory(const string& filename) {
-    
+
     // What it does: It reads all lines from the history file and prints them.
     // Input: filename - Path to the history file.
     // Output: None (prints game history to console).
@@ -108,10 +108,15 @@ void displayHistory(const string& filename) {
 
 
 int countPreviousGames(const string& filename) {
+
+     // What it does: Counts non-empty lines in the history file to determine the next game number.
+     // Input: filename - Path to the history file.
+     // Output: Number of previously played games
     
     ifstream file(filename);
     string line;
     int count = 0;
+
 
     if (file.is_open()) {
         while (getline(file, line)) {
