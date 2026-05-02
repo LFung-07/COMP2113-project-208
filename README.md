@@ -1,9 +1,9 @@
-# Hangman Game - ENGG1340 / COMP2113 Course Project
+# Hangman Game - COMP2113 Course Project
 
 ## Team Members
 - Shiwoo Ahn - 3036516873
-- [Name 2] - [UID 2]
-- [Name 3] - [UID 3]
+- Leung Fung - 3036600181
+- Ng Cheuk Hang - 3036588204
 
 ## Game Description
 A text-based Hangman game with multiple difficulty levels, random events,
