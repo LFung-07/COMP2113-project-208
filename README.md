@@ -46,4 +46,5 @@ Filtered from Google 10,000 most common English words dataset.
 
 ### Compile:
 ```bash
-make
+g++ -std=c++11 -o hangman src/main.cpp src/game.cpp src/fileio.cpp src/history.cpp
+hangman
