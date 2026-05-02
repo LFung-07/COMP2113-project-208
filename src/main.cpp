@@ -22,14 +22,13 @@ int displayMenu() {
     cout << "Enter your choice (1-3): ";
     cin >> choice;
     return choice;
-}
 
 
 // What it does: Shows difficulty options and gets player's choice.
 // Input: reads choice from cin.
 // Output: Maximum wrong guesses for the chosen difficulty. Returns 0 if it is an invalid choice.
 
-int selectDifficulty(string& difficulty) {
+int selectDifficulty(string& difficultyName) {
     int choice;
     cout << "\n----- Select Difficulty -----" << endl;
     cout << "1. Easy   (12 wrong attempts)" << endl;
@@ -39,16 +38,11 @@ int selectDifficulty(string& difficulty) {
     cout << "Enter your choice (1-3): ";
     cin >> choice;
 
+
     switch (choice) {
-        case 1:
-            difficulty = "Easy";
-            return 12;
-        case 2:
-            difficulty = "Normal";
-            return 9;
-        case 3:
-            difficulty = "Hard";
-            return 6;
+        case 1: difficultyName = "Easy"; return 12;
+        case 2: difficultyName = "Normal"; return 9;
+        case 3: difficultyName = "Hard"; return 6;
         default:
             cout << "Invalid choice!" << endl;
             return 0;
@@ -62,43 +56,49 @@ int selectDifficulty(string& difficulty) {
 //   - max_no_wrong: Maximum number of allowed wrong guesses.
 // Output: None (prints ASCII art to console).
 
-void displayHangman(int wrong, int max_no_wrong) {
+void displayHangman(int wrongGuesses, int maxWrong) {
+    int stage;
+    if (wrongGuesses <= 0) {
+        stage = 0;
+    } else if (wrongGuesses >= maxWrong) {
+        stage = 7;
+    } else {
+        stage = (wrongGuesses * 7) / maxWrong;
+    }
+   
     cout << "\n   +---+" << endl;
     cout << "   |   |" << endl;
-    
-    // Head
-    if (wrong >= 1)
+   
+    if (stage >= 1)
         cout << "   |   O" << endl;
-    else
+    else    
         cout << "   |" << endl;
-    
-    // Body and arms
-    if (wrong == 2)
+   
+    if (stage == 2)
         cout << "   |   |" << endl;
-    else if (wrong == 3)
+    else if (stage == 3)
         cout << "   |  /|" << endl;
-    else if (wrong >= 4)
+    else if (stage >= 4)
         cout << "   |  /|\\" << endl;
     else
         cout << "   |" << endl;
-    
-    // Waist
-    if (wrong >= 5)
+   
+    if (stage >= 5)
         cout << "   |   |" << endl;
     else
         cout << "   |" << endl;
-    
-    // Legs
-    if (wrong == 6)
+   
+    if (stage == 6)
         cout << "   |  /" << endl;
-    else if (wrong >= 7)
+    else if (stage >= 7)
         cout << "   |  / \\" << endl;
     else
         cout << "   |" << endl;
-    
+   
     cout << "   |" << endl;
     cout << "=========" << endl;
 }
+
 
 
 // What it does: Randomly selects between Lucky Hint and Bomb Defuse.
@@ -106,20 +106,19 @@ void displayHangman(int wrong, int max_no_wrong) {
 // Output: None (modifies game state or prints hint to console).
 
 void checkRandomEvent(Hangman& game) {
-    int chance = rand() % 100;  // 0-99
-    
-    if (chance < 10) {
-        // 10% chance: Lucky Hint - show unguessed vowel count
-        int no_of_vowel = game.getUnguessedVowelCount();
-        cout << "\n🌟 RANDOM EVENT: LUCKY HINT! 🌟" << endl;
-        cout << "There are " << no_of_vowel << " unguessed vowels remaining in the word." << endl;
-    } else if (chance < 20) {
-        // 10% chance: Bomb Defuse - eliminate a wrong letter
+    int randomChance = rand() % 100;
+   
+    if (randomChance < 10) {
+        int vowelCount = game.getUnguessedVowelCount();
+        cout << "\n*** RANDOM EVENT: LUCKY HINT! ***" << endl;
+        cout << "There are " << vowelCount
+             << " unguessed vowels remaining in the word." << endl;
+    } else if (randomChance < 20) {
         char defused = game.defuseWrongLetter();
         if (defused != '\0') {
-            cout << "\n💣 RANDOM EVENT: BOMB DEFUSE! 💣" << endl;
+            cout << "\n*** RANDOM EVENT: BOMB DEFUSE! ***" << endl;
             cout << "The letter '" << defused
-                      << "' has been eliminated as a wrong guess!" << endl;
+                 << "' has been eliminated as a wrong guess!" << endl;
         }
     }
 }
@@ -130,70 +129,122 @@ void checkRandomEvent(Hangman& game) {
 // Output: None (runs game, saves result to history).
 
 void playGame(const vector<string>& words,
-              const string& difficulty_name,
-              int max_wrong, 
-              int& game_count,
-              const string& history_file) {
-    // Select random word
-    string secret_word = getRandomWord(words);
-    
-    // Create game object
-    Hangman game(secret_word, max_wrong);
-    
-    // Increment game count
-    game_count++;
-    cout << "\n--- Game " << game_count << " ---" << endl;
-    cout << "Difficulty: " << difficulty << endl;
-    cout << "Word length: " << secret_word.length() << " letters" << endl;
+              const string& difficultyName,
+              int maxWrong, int& gameCount,
+              const string& historyFile) {
+    string secretWord = getRandomWord(words);
+    Hangman game(secretWord, maxWrong);
+   
+    gameCount++;
+    cout << "\n--- Game " << gameCount << " ---" << endl;
+    cout << "Difficulty: " << difficultyName << endl;
+    cout << "Word length: " << secretWord.length() << " letters" << endl;
 
-    // Main game loop
+
     while (!game.isGameOver()) {
-        displayHangman(game.getRemainingGuesses(), game.getMaxGuesses());
+        int wrongGuessesMade = game.getMaxGuesses() - game.getRemainingGuesses();
+        displayHangman(wrongGuessesMade, game.getMaxGuesses());
+       
         cout << "\nWord: " << game.getDisplayedWord() << endl;
         cout << "Guessed letters: " << game.getGuessedLetters() << endl;
         cout << "Remaining guesses: " << game.getRemainingGuesses()
-                  << "/" << game.getMaxGuesses() << endl;
+             << "/" << game.getMaxGuesses() << endl;
 
-        // Check for random event before each guess
+
         checkRandomEvent(game);
 
-        // Get player's guess
+
         cout << "\nEnter a letter: ";
         string input;
         cin >> input;
 
-        // Validate input
+
         if (input.length() != 1 || !isalpha(input[0])) {
             cout << "Please enter a single letter!" << endl;
             continue;
         }
 
+
         bool correct = game.guessLetter(input[0]);
-        if (correct) {
-            cout << "✅ Correct!" << endl;
-        } else {
-            cout << "❌ Wrong!" << endl;
-        }
+        if (correct)
+            cout << ">> Correct!" << endl;
+        else
+            cout << ">> Wrong!" << endl;
     }
 
-    // Game over - display final result
-    displayHangman(game.getRemainingGuesses(), game.getMaxGuesses());
+
+    int wrongGuessesMade = game.getMaxGuesses() - game.getRemainingGuesses();
+    displayHangman(wrongGuessesMade, game.getMaxGuesses());
+   
     cout << "\n=============== GAME OVER ===============" << endl;
     cout << "Word: " << game.getSecretWord() << endl;
 
-    if (game.isWin()) {
-        cout << "🎉 CONGRATULATIONS! YOU WIN! 🎉" << endl;
-    } else {
-        cout << "💀 YOU LOSE! Better luck next time! 💀" << endl;
-    }
 
-    // Save to history
-    int atps_left = game.getRemainingGuesses();
-    saveGameHistory(history_file, game_count, difficulty,
+    if (game.isWin())
+        cout << "=== CONGRATULATIONS! YOU WIN! ===" << endl;
+    else
+        cout << "=== YOU LOSE! Better luck next time! ===" << endl;
+
+
+    int attemptsLeft = game.getRemainingGuesses();
+    saveGameHistory(historyFile, gameCount, difficultyName,
                     game.isWin(), game.getSecretWord(),
-                    atps_left, game.getMaxGuesses());
+                  attemptsLeft, game.getMaxGuesses());
+
 
     cout << "\nGame saved to history." << endl;
+}
+
+
+int main() {
+    srand(static_cast<unsigned int>(time(nullptr)));
+
+
+    const string WORDS_FILE = "data/words.txt";
+    const string HISTORY_FILE = "history/game_history.txt";
+
+
+    cout << "Loading word list..." << endl;
+    vector<string> words = loadWords(WORDS_FILE);
+
+
+    if (words.empty()) {
+        cout << "Error: No words loaded. Please check " << WORDS_FILE << endl;
+        return 1;
+    }
+    cout << "Loaded " << words.size() << " words." << endl;
+
+
+    int gameCount = countPreviousGames(HISTORY_FILE);
+
+
+    bool quit = false;
+    while (!quit) {
+        int choice = displayMenu();
+
+
+        switch (choice) {
+            case 1: {
+                string difficultyName;
+                int maxWrong = selectDifficulty(difficultyName);
+                if (maxWrong > 0)
+                    playGame(words, difficultyName, maxWrong, gameCount, HISTORY_FILE);
+                break;
+            }
+            case 2:
+                displayHistory(HISTORY_FILE);
+                break;
+            case 3:
+                cout << "\nThank you for playing Hangman! Goodbye!" << endl;
+                quit = true;
+                break;
+            default:
+                cout << "Invalid choice! Please enter 1, 2, or 3." << endl;
+        }
+    }
+
+
+    return 0;
 }
 
 
