@@ -22,6 +22,7 @@ int displayMenu() {
     cout << "Enter your choice (1-3): ";
     cin >> choice;
     return choice;
+}
 
 
 // What it does: Shows difficulty options and gets player's choice.
@@ -37,7 +38,6 @@ int selectDifficulty(string& difficultyName) {
     cout << "----------------------------" << endl;
     cout << "Enter your choice (1-3): ";
     cin >> choice;
-
 
     switch (choice) {
         case 1: difficultyName = "Easy"; return 12;
@@ -100,7 +100,6 @@ void displayHangman(int wrongGuesses, int maxWrong) {
 }
 
 
-
 // What it does: Randomly selects between Lucky Hint and Bomb Defuse.
 // Input: game - Reference to the Hangman game object.
 // Output: None (modifies game state or prints hint to console).
@@ -140,7 +139,6 @@ void playGame(const vector<string>& words,
     cout << "Difficulty: " << difficultyName << endl;
     cout << "Word length: " << secretWord.length() << " letters" << endl;
 
-
     while (!game.isGameOver()) {
         int wrongGuessesMade = game.getMaxGuesses() - game.getRemainingGuesses();
         displayHangman(wrongGuessesMade, game.getMaxGuesses());
@@ -153,17 +151,14 @@ void playGame(const vector<string>& words,
 
         checkRandomEvent(game);
 
-
         cout << "\nEnter a letter: ";
         string input;
         cin >> input;
-
 
         if (input.length() != 1 || !isalpha(input[0])) {
             cout << "Please enter a single letter!" << endl;
             continue;
         }
-
 
         bool correct = game.guessLetter(input[0]);
         if (correct)
@@ -172,25 +167,21 @@ void playGame(const vector<string>& words,
             cout << ">> Wrong!" << endl;
     }
 
-
     int wrongGuessesMade = game.getMaxGuesses() - game.getRemainingGuesses();
     displayHangman(wrongGuessesMade, game.getMaxGuesses());
    
     cout << "\n=============== GAME OVER ===============" << endl;
     cout << "Word: " << game.getSecretWord() << endl;
 
-
     if (game.isWin())
         cout << "=== CONGRATULATIONS! YOU WIN! ===" << endl;
     else
         cout << "=== YOU LOSE! Better luck next time! ===" << endl;
 
-
     int attemptsLeft = game.getRemainingGuesses();
     saveGameHistory(historyFile, gameCount, difficultyName,
                     game.isWin(), game.getSecretWord(),
-                  attemptsLeft, game.getMaxGuesses());
-
+                    attemptsLeft, game.getMaxGuesses());
 
     cout << "\nGame saved to history." << endl;
 }
