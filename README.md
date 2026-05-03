@@ -40,7 +40,7 @@ Records all games with format:
 None. Only standard C++ libraries used.
 
 ## Word List Source
-Filtered from Google 10,000 most common English words dataset.
+Filtered from Google most common English words dataset.
 
 ## Compilation & Execution
 
