@@ -44,7 +44,20 @@ Filtered from Google 10,000 most common English words dataset.
 
 ## Compilation & Execution
 
-### Compile:
-```bash
+### Using Makefile:
+\`\`\`bash
+make
+./hangman
+\`\`\`
+
+### Direct Compilation (without make):
+\`\`\`bash
 g++ -std=c++11 -o hangman src/main.cpp src/game.cpp src/fileio.cpp src/history.cpp
-hangman
+./hangman
+\`\`\`
+
+### Clean:
+\`\`\`bash
+make clean
+make cleanall
+\`\`\`
