@@ -51,10 +51,10 @@ make
 \`\`\`
 
 ### Direct Compilation (without make):
-\`\`\`bash
+\\\bash
 g++ -std=c++11 -o hangman src/main.cpp src/game.cpp src/fileio.cpp src/history.cpp
 ./hangman
-\`\`\`
+\\\
 
 ### Clean:
 \`\`\`bash
