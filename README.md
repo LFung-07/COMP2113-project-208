@@ -1,4 +1,4 @@
-# Hangman Game - COMP2113 Course Project
+# Hangman Game - ENGG1340 / COMP2113 Course Project
 
 ## Team Members
 - Shiwoo Ahn - 3036516873
@@ -41,6 +41,8 @@ None. Only standard C++ libraries used.
 
 ## Word List Source
 Filtered from Google 10,000 most common English words dataset.
+
+## Compilation & Execution
 
 ### Using Makefile:
 ```bash
