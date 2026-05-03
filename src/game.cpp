@@ -3,6 +3,8 @@
 using namespace std;
 
 Hangman::Hangman(const string& word, int maxWrong) {
+  // input the secret word and max wrong attempts
+  // output hangman display
   answer=word;
   maxwrong=maxWrong;
   wrong=0;
@@ -20,12 +22,17 @@ Hangman::Hangman(const string& word, int maxWrong) {
 }
   
 bool Hangman::guessLetter(char letter) {
+  // input player's guess
+  // output true if letter found in word, false if wrong guess
   letter=tolower(letter);
+  // check if letter already being guessed
   if (guessed_char.find(letter) != guessed_char.end()) {
     cout << "You have already guessed '" << letter << "'!" << endl;
     return false;
   }
+  // add to list of guessed letters
   guessed_char.insert(letter);
+  // check if letter is in answer
   bool found=false;
   for (size_t i=0; i<answer.length(); i++) {
     if (answer[i]==letter) {
@@ -37,10 +44,12 @@ bool Hangman::guessLetter(char letter) {
     wrong_char.insert(letter);
     wrong++;
   }
+  // lose
   if (wrong>=maxwrong) {
     game_end=true;
     win=false;
   }
+  // win
   if (display==answer) {
     game_end=true;
     win=true;
@@ -49,14 +58,17 @@ bool Hangman::guessLetter(char letter) {
 }
 
 bool Hangman::isWin() const {
+  // output true if player has won
   return win;
 }
 
 bool Hangman::isGameOver() const {
+  // output true if game has ended
   return game_end;
 }
 
 string Hangman::getDisplayedWord() const {
+  // output display
   string result;
   for (size_t i=0; i<display.length();i++) {
     result+=display[i];
@@ -68,6 +80,7 @@ string Hangman::getDisplayedWord() const {
 }
 
 string Hangman::getGuessedLetters() const {
+  // output guessed letters in display
   string result;
   for (set<char>::iterator it=guessed_char.begin(); it!=guessed_char.end(); ++it) {
     result+=*it;
@@ -77,21 +90,26 @@ string Hangman::getGuessedLetters() const {
 }
 
 string Hangman::getSecretWord() const {
+  // output the answer
   return answer;
 }
 
 int Hangman::getRemainingGuesses() const{
+  // output guesses remaining
   return maxwrong-wrong;
 }
 
 int Hangman::getMaxGuesses() const{
+  // output max wrong attempts allowed 
   return maxwrong;
 }
 
 int Hangman::getUnguessedVowelCount() const {
+  // output number of unguessed vowels
   int count=0;
   for (size_t i=0; i<answer.length(); i++) {
     char c=answer[i];
+    //check if letter is a vowel
     bool isVowel=false;
     for (int v=0;v<5;v++) {
       if (c==vowels[v]) {
@@ -99,6 +117,7 @@ int Hangman::getUnguessedVowelCount() const {
         break;
       }
     }
+    // count number of ungussed vowels
     if (isVowel==true && guessed_char.find(c)==guessed_char.end()) {
       count++;
     }
@@ -107,11 +126,13 @@ int Hangman::getUnguessedVowelCount() const {
 }
 
 char Hangman::defuseWrongLetter() {
+    // output defused letter
     char* candidates;
     candidates=new char[26];
     int candidateCount=0;
     for (char c='a'; c<='z'; c++) {
       bool inSecret=false;
+      //find unguessed and wrong letters
       for (size_t i=0; i<answer.length();i++) {
         if (answer[i]==c) {
           inSecret=true;
@@ -125,8 +146,10 @@ char Hangman::defuseWrongLetter() {
   }
   char defused='\0';
   if (candidateCount>0) {
+    // defuse a random letter
     int randomIndex=rand()%candidateCount;
     defused=candidates[randomIndex];
+    // add that letter to the guessed list
     guessed_char.insert(defused);
     wrong_char.insert(defused);
   }
