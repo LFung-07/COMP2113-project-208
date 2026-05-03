@@ -1,3 +1,7 @@
+# Makefile for Hangman Game
+# ENGG1340 / COMP2113 Course Project
+# Compiles all source files into the hangman executable
+
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -g
 TARGET = hangman
