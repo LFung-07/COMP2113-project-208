@@ -2,7 +2,11 @@
 #include <sstream>
 
 std::string formatHistoryRecord(const GameHistory& game) {
-  
+    /*
+     * What it does: Creates a formatted string from a GameHistory record.
+     * Input: game - A GameHistory struct with game details.
+     * Output: String in format: "Game X || Difficulty || Win/Loss || Answer || L/T"
+     */
     std::stringstream ss;
     ss << "Game " << game.gameNumber << " || "
        << game.difficulty << " || "
@@ -11,5 +15,4 @@ std::string formatHistoryRecord(const GameHistory& game) {
        << game.attemptsLeft << "/" << game.maxAttempts;
   
     return ss.str();
-  
 }
