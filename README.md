@@ -42,22 +42,20 @@ None. Only standard C++ libraries used.
 ## Word List Source
 Filtered from Google 10,000 most common English words dataset.
 
-## Compilation & Execution
-
 ### Using Makefile:
-\`\`\`bash
+```bash
 make
 ./hangman
-\`\`\`
+```
 
 ### Direct Compilation (without make):
-\\\bash
+```bash
 g++ -std=c++11 -o hangman src/main.cpp src/game.cpp src/fileio.cpp src/history.cpp
 ./hangman
-\\\
+```
 
 ### Clean:
-\`\`\`bash
+```bash
 make clean
 make cleanall
-\`\`\`
+```
